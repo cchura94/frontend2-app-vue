@@ -1,17 +1,23 @@
 <template>
- <div>
-<div id="nav">
-    <router-link to="/">Inicio</router-link> |
-    <router-link to="/productos">Nuestros Productos</router-link> |
-    <router-link to="/login">Login</router-link>
-  </div>
+  <v-app>
+    
+    <Menu></Menu>
 
-   <router-view/>
-   </div>
+    <v-main>
+      <router-view/>
+      
+    </v-main>
+
+  </v-app>
+
 </template>
 
 <script>
+import Menu from "@/components/navegacion/Menu.vue"
 export default {
+  components: {
+    Menu
+  }
 
 }
 </script>

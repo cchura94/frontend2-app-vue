@@ -12,6 +12,13 @@
 
     <button type="button" @click="guardarCategoria()">Guardar Categoria</button>
   </form>
+
+  <v-data-table
+    :headers="headers"
+    :items="lista_categorias"
+    :items-per-page="5"
+    class="elevation-1"
+  ></v-data-table>
   
   <table border=1>
     <thead>
@@ -45,7 +52,18 @@ export default {
       categoria: {
         nombre: "",
         detalle: ""
-      }
+      },
+      headers: [
+          {
+            text: 'ID',
+            align: 'start',
+            sortable: true,
+            value: 'id',
+          },
+          { text: 'Nombre', value: 'nombre' },
+          { text: 'Detalle', value: 'detalle' },
+          { text: 'Acciones', value: 'acciones' },
+        ],
     }
   },
   async mounted(){

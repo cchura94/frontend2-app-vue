@@ -1,19 +1,43 @@
 <template>
-  <div>
 
-    <h1>Login</h1>
-  <p>{{ usuario }}</p>
-  <form action="">
-      <label for="">Ingrese Correo: </label>
-      <input type="email" required v-model="usuario.email">
-      <br>
-      <label for="">Ingrese Contraseña: </label>
-      <input type="password" required v-model="usuario.password">
-    <br>
-      <button type="button" @click="ingresar()">Ingresar</button>
-  </form>
+     <v-container class="fill-height" fluid>
+          <v-row align="center" justify="center">
+            <v-col cols="12" sm="8" md="4">
+              <v-card class="elevation-12">
+                <v-toolbar color="primary" dark flat>
+                   <v-toolbar-title>Ingresar</v-toolbar-title>
+                </v-toolbar>
+
+                <v-card-text>
+                   <v-form>
+                    <v-text-field
+                      label="Ingrese su correo"
+                      name="login"
+                      prepend-icon="mdi-account"
+                      type="email"
+                      v-model="usuario.email"
+                    ></v-text-field>
   
-  </div>
+                    <v-text-field
+                      id="password"
+                      label="Ingrese su Contraseña"
+                      name="password"
+                      prepend-icon="mdi-lock"
+                      type="password"
+                      v-model="usuario.password"
+                    ></v-text-field>
+                  </v-form>
+                </v-card-text>
+                 <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary"  @click="ingresar()">Ingresar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+     </v-container>
+
+
 
 </template>
 
