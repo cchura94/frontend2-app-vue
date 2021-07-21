@@ -11,7 +11,8 @@ export const routerAdmin = [
     {
       path: 'categoria',
       name: 'Categoria',
-      component: Categoria
+      component: Categoria,
+      meta: {requireAuth: true},
     },
     {
       path: 'producto',

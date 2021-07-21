@@ -35,6 +35,29 @@
               </v-card>
             </v-col>
           </v-row>
+
+          <v-snackbar
+            v-model="snackbar"
+            :timeout="timeout"
+            absolute
+            top
+            color="red lighten-1"
+            elevation="24"
+          >
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="light"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+              >
+                Cerrar
+              </v-btn>
+            </template>
+          </v-snackbar>
+
      </v-container>
 
 
@@ -50,16 +73,26 @@ export default {
       usuario: {
         email: "",
         password: ""
-      }
+      },
+      snackbar: false,
+      timeout: 3000,
+      text: "Credenciales Incorrectas"
     }
   },
   methods: {
     async ingresar(){
       try{
         let {data} = await authService.login(this.usuario)
-        console.log(data);
+
+        if(data){
+          // almacenar el localStorage
+          localStorage.setItem("authUser", btoa(JSON.stringify(data)))
+          this.$router.push("admin")
+        }
+
       }catch(error){
         console.log("Error al Autenticar")
+        this.snackbar = true
       }
     }
   }

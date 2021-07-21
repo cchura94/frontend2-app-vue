@@ -1,7 +1,13 @@
 import { http, httpFile } from "./http"
 
 export const index = async function(){
-    return await http().get("/categoria");
+    /*const authUser = JSON.parse(atob(localStorage.getItem("authUser")))
+    const header = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer '+authUser.token
+    }*/
+
+    return await http().get("/categoria"/*, {headers: header}*/);
 }
 
 export const store = async function(datos){

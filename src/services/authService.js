@@ -17,3 +17,19 @@ export async function login(params) {
         console.log(error);
    }
 }
+
+export async function refresh(){
+    try{
+        let {data} = await http().get("/auth/refresh")
+        if(data){
+            // almacenar el localStorage
+            localStorage.setItem("authUser", btoa(JSON.stringify(data)))
+            return true
+           
+          }
+
+    }catch(error){
+         console.log("**ERR**: ",error);
+         return false;
+    }
+}

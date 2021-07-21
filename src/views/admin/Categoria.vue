@@ -67,9 +67,13 @@ export default {
     }
   },
   async mounted(){
-    let {data} = await catService.index();
-    this.lista_categorias = data.data
-    console.log(data)
+    try{
+      let {data} = await catService.index();
+      this.lista_categorias = data.data
+      console.log(data)
+    }catch(error){
+      this.$router.push("/login")
+    }
   },
   methods: {
     async guardarCategoria(){
