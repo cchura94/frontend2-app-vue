@@ -14,7 +14,11 @@
                 <v-icon>mdi-post</v-icon>
             </v-btn>
 
-            <v-btn icon to="/login">
+            <v-btn icon to="/login" v-if="$store.state.user == null">
+                <v-icon>mdi-account</v-icon>
+            </v-btn>
+
+            <v-btn icon to="/admin" v-if="$store.state.user != null">
                 <v-icon>mdi-account</v-icon>
             </v-btn>
             
@@ -24,8 +28,16 @@
 </template>
 
 <script>
-export default {
 
+export default {
+    data(){
+        return {
+            auth: false
+        }
+    },
+    methods: {
+        //estaAuthenticado
+    }
 }
 </script>
 

@@ -32,7 +32,10 @@ const routes = [
       {
         path: 'login',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta: {
+          redirectAuth: true
+        }
       }
     ]
   },
@@ -57,6 +60,9 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   console.log(to.meta)
+  /*if(to.meta.redirectAuth){
+    next({name: 'Admin'})
+  }*/
   if(to.meta.requireAuth){
 
     try{
@@ -64,6 +70,7 @@ router.beforeEach(async (to, from, next) => {
       console.log("AUTH: ", auth);
       const authUser = JSON.parse(atob(localStorage.getItem("authUser")))
       if(authUser && authUser.token && auth){
+        
           next()
       }else{
           next({name: 'Login'})

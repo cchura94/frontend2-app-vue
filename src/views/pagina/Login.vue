@@ -27,10 +27,12 @@
                       v-model="usuario.password"
                     ></v-text-field>
                   </v-form>
+                  {{ $store.state }}
                 </v-card-text>
                  <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="primary"  @click="ingresar()">Ingresar</v-btn>
+                  <v-btn color="primary"  @click="ingresar2()">Ingresar Vuex</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -94,6 +96,10 @@ export default {
         console.log("Error al Autenticar")
         this.snackbar = true
       }
+    },
+    ingresar2(){
+      this.$store.dispatch('login', this.usuario)
+      // this.$router.push("admin")
     }
   }
 

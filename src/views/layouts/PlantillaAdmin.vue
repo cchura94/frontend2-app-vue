@@ -52,7 +52,7 @@
         dark
       >
       <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"></v-app-bar-nav-icon>
-        <v-toolbar-title>ADMIN</v-toolbar-title>
+        <v-toolbar-title>ADMIN {{ $store.state.user.email }} <v-btn @click="logout()">salir</v-btn> </v-toolbar-title>
         <v-spacer></v-spacer>
         
       </v-app-bar>
@@ -111,7 +111,13 @@ export default {
         },
       ]
     }
+  },
+  methods:{
+    logout(){
+      this.$store.dispatch("logout");
+    }
   }
+
 
 }
 </script>
