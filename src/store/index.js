@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import router from "./../router/index"
+import { urlbase } from "./../config"
 Vue.use(Vuex)
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
+axios.defaults.baseURL = urlbase
 
 export default new Vuex.Store({
   state: {

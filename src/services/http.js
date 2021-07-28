@@ -51,10 +51,13 @@ export function http() {
 }
 
 export function httpFile() {
+     const authUser = JSON.parse(atob(localStorage.getItem("authUser")))
+    
     return axios.create({
         baseURL: urlbase,
         headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+             'Authorization': 'Bearer '+authUser.token
         }
     })
 }

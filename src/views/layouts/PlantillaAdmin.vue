@@ -109,6 +109,28 @@ export default {
           icon: 'mdi-widgets',
           url: '/admin/categoria'
         },
+
+        {
+          nombre: 'USUARIOS',
+          icon: 'mdi-account',
+          submenu: [
+            {
+              nombre: 'personal',
+              icon: 'mdi-person',
+              url: '/admin/personal'
+            },
+            {
+              nombre: 'Persona',
+              icon: 'mdi-user',
+              url: '/admin/persona'
+            },
+            {
+              nombre: 'User',
+              icon: 'mdi-account',
+              url: '/admin/usuario'
+            }
+          ]
+        },
       ]
     }
   },

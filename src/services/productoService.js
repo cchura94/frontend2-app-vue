@@ -12,8 +12,8 @@ export const show = async function(id){
     return await http().get(`/admin/producto/${id}`);
 }
 
-export const update = async function(id, datos){
-    return await http().put(`/admin/producto/${id}`, datos);
+export const modificar = async function(id, datos){
+    return await http().patch(`/admin/producto/${id}`, datos);
 }
 
 export const destroy = async function(id){

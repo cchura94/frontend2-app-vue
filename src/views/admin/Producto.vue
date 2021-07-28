@@ -93,7 +93,8 @@
                     sm="6"
                     md="4"
                   >
-                  <input type="file" @change="imagenSeleccionada">
+                  <input type="file" ref="img" @change="imagenSeleccionada">
+                  
                   </v-col>
                 </v-row>
               </v-container>
@@ -151,6 +152,12 @@
     </template>
 
     </v-data-table>
+    <code>
+      <pre>
+        {{$refs}}
+      </pre>
+    </code>
+
   </div>
 </template>
 
@@ -194,6 +201,7 @@ export default {
         imagen: '',
       },
       editedIndex: -1,
+      id_eliminar: 0
     }
   },
   computed: {
@@ -214,12 +222,14 @@ export default {
       
       this.total_productos = data.total
       this.cargando = false
+      
     },
     imagenSeleccionada(event){
       //console.log(event.target.files[0])
       this.item_producto.imagen = event.target.files[0]
     },
     async guardarProducto(){
+
       let formdata = new FormData();
       formdata.append("nombre", this.item_producto.nombre)
       formdata.append("precio", this.item_producto.precio)
@@ -228,16 +238,27 @@ export default {
       formdata.append("categoria_id", this.item_producto.categoria_id)
       formdata.append("imagen", this.item_producto.imagen, this.item_producto.imagen.name)
 
+
+       if (this.editedIndex > -1) {
+          //Object.assign(this.lista_productos[this.editedIndex], this.item_producto)
+    const {data} = await prodService.modificar(this.item_producto.id, formdata)
+        console.log(data)
+        } else {
+          
+      
       const {data} = await prodService.store(formdata)
-      console.log(data);
-      this.dialog = false
+      
       this.lista_productos.push(data.data)
+        }
+        this.close()
+
     },
     close(){
       this.dialog = false
       this.$nextTick(() => {
           this.item_producto = Object.assign({}, this.default_item_producto)
           this.editedIndex = -1
+          this.$refs.img.value = null
         })
     },
     editItem (item) {
@@ -247,10 +268,29 @@ export default {
       },
 
       deleteItem (item) {
+        this.id_eliminar = item.id
         this.editedIndex = this.lista_productos.indexOf(item)
         this.item_producto = Object.assign({}, item)
         this.dialogDelete = true
+
       },
+    async deleteItemConfirm () {
+        const {data} = prodService.destroy(this.id_eliminar)
+        console.log(data)
+        this.lista_productos.splice(this.editedIndex, 1)
+        this.id_eliminar = 0
+        this.closeDelete()
+      },
+    closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.item_producto = Object.assign({}, this.default_item_producto)
+          this.editedIndex = -1
+        })
+      },
+  },
+  updated(){
+    console.log("UPDATE: ", this.$refs)
   },
   watch: {
     opciones: {
