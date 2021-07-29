@@ -136,6 +136,7 @@
     </template>
 
     <template v-slot:[`item.acciones`]="{ item }">
+      <img width="100px" :src="`http://localhost/backlaravelapp/public/${item.imagen}`" alt="">
       <v-icon
         small
         class="mr-2"
@@ -201,7 +202,8 @@ export default {
         imagen: '',
       },
       editedIndex: -1,
-      id_eliminar: 0
+      id_eliminar: 0,
+      img: false
     }
   },
   computed: {
@@ -227,21 +229,26 @@ export default {
     imagenSeleccionada(event){
       //console.log(event.target.files[0])
       this.item_producto.imagen = event.target.files[0]
+      this.img = true
     },
     async guardarProducto(){
 
-      let formdata = new FormData();
+      let formdata = new FormData;
       formdata.append("nombre", this.item_producto.nombre)
       formdata.append("precio", this.item_producto.precio)
       formdata.append("stock", this.item_producto.stock)
       formdata.append("descripcion", this.item_producto.descripcion)
       formdata.append("categoria_id", this.item_producto.categoria_id)
-      formdata.append("imagen", this.item_producto.imagen, this.item_producto.imagen.name)
+      
+      if(this.img){
+        formdata.append("imagen", this.item_producto.imagen)
+      }
 
 
        if (this.editedIndex > -1) {
+         formdata.append("_method", "PUT")
           //Object.assign(this.lista_productos[this.editedIndex], this.item_producto)
-    const {data} = await prodService.modificar(this.item_producto.id, formdata)
+    const {data} = await prodService.update(this.item_producto.id, formdata)
         console.log(data)
         } else {
           
@@ -250,6 +257,7 @@ export default {
       
       this.lista_productos.push(data.data)
         }
+        this.img = false;
         this.close()
 
     },

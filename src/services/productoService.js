@@ -12,10 +12,14 @@ export const show = async function(id){
     return await http().get(`/admin/producto/${id}`);
 }
 
-export const modificar = async function(id, datos){
+export const update = async function(id, datos){
+    return await http().post(`/admin/producto/${id}`, datos)
+}
+/*
+export const update = async function(id, datos){
     return await http().patch(`/admin/producto/${id}`, datos);
 }
-
+*/
 export const destroy = async function(id){
     return await http().delete(`/admin/producto/${id}`);
 }

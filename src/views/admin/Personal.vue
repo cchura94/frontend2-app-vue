@@ -40,6 +40,7 @@
                         hint="Ingrese ci o nit"
                         v-model="personal.ci_nit"
                         @keyup="limpiarerror()"
+                        :rules="ciRules"
                         :error-messages="errores.ci_nit"
                       ></v-text-field>
                       <!--v-text-field
@@ -103,22 +104,46 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Close
+            <v-btn color="blue darken-1" text @click="cerrarDialog">
+              Cerrar
             </v-btn>
-            <v-btn
+            <v-btn v-if="editedIndex == -1"
               color="blue darken-1"
-              text
+              text              
               @click="guardarPersonal"
               :disabled="!valid"
             >
               Guardar Personal
             </v-btn>
+
+            <v-btn v-if="editedIndex != -1"
+              color="blue darken-1"
+              text              
+              @click="modificarPersonal"
+              :disabled="!valid"
+            >
+              Modificar Personal
+            </v-btn>
+            
+            
           </v-card-actions>
         </v-form>
         {{ valid }}
+        {{ editedIndex }}
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">¿Está seguro de eliminar este Personal?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="cerrarDialogDelete">Cancelar</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm">SI</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
     <v-data-table
     dense
@@ -173,7 +198,17 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "El correo no es valido",
       ],
       passwordRules: [(v) => !!v || "Contraseña Obligatorio"],
+      ciRules: [(v) => !!v || "Ci o Nit es Obligatorio"],
       personal: {
+        nombres: "",
+        apellidos: "",
+        ci_nit: "",
+        telefono: "",
+        email: "",
+        password: "",
+        item: "",
+      },
+      default_personal:{
         nombres: "",
         apellidos: "",
         ci_nit: "",
@@ -199,7 +234,9 @@ export default {
         { text: 'Item', value: 'item' },
         { text: 'ACCIONES', value: 'acciones', sortable: "false"}
       ],
-      editedIndex: -1
+      editedIndex: -1,
+      id_eliminar: 0,
+dialogDelete: false
     };
   },
   mounted() {
@@ -243,7 +280,8 @@ export default {
       }
     },
     editItem (item) {
-        let item2 = {          
+        let item2 = { 
+          id:item.id,     
           nombres: item.persona.nombres,
           apellidos: item.persona.apellidos,
           ci_nit: item.persona.ci_nit,
@@ -255,6 +293,52 @@ export default {
         this.personal = Object.assign({}, item2)
         this.dialog = true
       },
+
+    async modificarPersonal(){
+      try {
+        let res = await personalService.modificar(this.personal.id, this.personal);
+        console.log(res);
+
+        this.cerrarDialog()
+       
+        this.inicializarDatos();
+      
+      } catch (error) {
+        this.errores = error.response.data.errors;
+        console.log(error.response.data.errors);
+      }
+    },
+    cerrarDialog(){
+      this.$nextTick(() => {
+          this.personal = Object.assign({}, this.default_personal)
+          this.editedIndex = -1
+        })
+this.$refs.form.reset()
+         this.dialog = false
+    },
+    deleteItem (item) {
+        this.id_eliminar = item.id
+        this.editedIndex = this.lista_personal.indexOf(item)
+        this.personal = Object.assign({}, item)
+        this.dialogDelete = true
+
+      },
+    async deleteItemConfirm () {
+        const {data} = personalService.destroy(this.id_eliminar)
+        console.log(data)
+        this.lista_personal.splice(this.editedIndex, 1)
+        this.id_eliminar = 0
+        this.cerrarDialogDelete()
+      },
+
+      cerrarDialogDelete(){
+        
+ this.dialogDelete = false
+  this.editedIndex = -1;
+    },
+
+
+
   },
 };
 </script>
