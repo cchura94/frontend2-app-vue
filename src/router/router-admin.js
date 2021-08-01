@@ -5,6 +5,11 @@ import Personal from '../views/admin/Personal.vue';
 import Persona from '../views/admin/Persona.vue';
 import User from '../views/admin/User.vue';
 
+import Pedido from '../views/admin/Pedido.vue'
+import ListaPedido from '../components/pedido/ListaPedido.vue'
+import NuevoPedido from '../components/pedido/NuevoPedido.vue'
+import MostrarPedido from '../components/pedido/MostrarPedido.vue'
+
 export const routerAdmin = [
     {
       path: '',
@@ -36,5 +41,26 @@ export const routerAdmin = [
       path: 'usuario',
       name: 'Usuario',
       component: User
-    }
+    },
+    {
+      path: 'pedido',
+      component: Pedido,
+      children: [
+        {
+          path: '',
+          name: 'ListaPedido',
+          component: ListaPedido
+        },
+        {
+          path: 'nuevo',
+          name: 'NuevoPedido',
+          component: NuevoPedido
+        },
+        {
+          path: ':id',
+          name: 'MostrarPedido',
+          component: MostrarPedido
+        }
+      ]
+    },
   ]

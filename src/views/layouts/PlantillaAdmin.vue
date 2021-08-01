@@ -131,6 +131,22 @@ export default {
             }
           ]
         },
+         {
+          nombre: 'PEDIDO',
+          icon: 'mdi-post',
+          submenu: [
+            {
+              nombre: 'Lista Pedidos',
+              icon: 'mdi-product',
+              url: '/admin/pedido'
+            },
+            {
+              nombre: 'Nuevo Pedido',
+              icon: 'mdi-product',
+              url: '/admin/pedido/nuevo'
+            }
+          ]
+        },
       ]
     }
   },
